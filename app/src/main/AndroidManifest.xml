@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Placemark">
         <activity
-            android:name=".PlacemarkActivity"
+            android:name=".activities.PlacemarkActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
