@@ -13,9 +13,8 @@ class MainApp : Application() {
         super.onCreate()
         Timber.plant(Timber.DebugTree())
         i("Placemark started")
-
-        placemarks.add(PlacemarkModel("One", "About one..."))
-        placemarks.add(PlacemarkModel("Two", "About two..."))
-        placemarks.add(PlacemarkModel("Three", "About three..."))
+//        placemarks.add(PlacemarkModel("One", "About one..."))
+//        placemarks.add(PlacemarkModel("Two", "About two..."))
+//        placemarks.add(PlacemarkModel("Three", "About three..."))
     }
 }
