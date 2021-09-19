@@ -12,7 +12,6 @@ import timber.log.Timber.i
 class PlacemarkActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPlacemarkBinding
     var placemark = PlacemarkModel()
-    //val placemarks = ArrayList<PlacemarkModel>()
     lateinit var app: MainApp
 
     override fun onCreate(savedInstanceState: Bundle?) {
