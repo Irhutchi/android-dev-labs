@@ -6,7 +6,13 @@ import androidx.recyclerview.widget.RecyclerView
 import org.wit.placemark.databinding.CardPlacemarkBinding
 import org.wit.placemark.models.PlacemarkModel
 
-class PlacemarkAdapter constructor(private var placemarks: List<PlacemarkModel>) :
+// Interface will represent click events on the placemark Card
+interface PlacemarkListener {
+    fun onPlacemarkClick(placemark: PlacemarkModel)
+}
+
+class PlacemarkAdapter constructor(private var placemarks: List<PlacemarkModel>,
+                                   private val listener: PlacemarkListener) :
     RecyclerView.Adapter<PlacemarkAdapter.MainHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {
@@ -17,7 +23,7 @@ class PlacemarkAdapter constructor(private var placemarks: List<PlacemarkModel>)
 
     override fun onBindViewHolder(holder: MainHolder, position: Int) {
         val placemark = placemarks[holder.adapterPosition]
-        holder.bind(placemark)
+        holder.bind(placemark, listener)
     }
 
     override fun getItemCount(): Int = placemarks.size
@@ -25,9 +31,10 @@ class PlacemarkAdapter constructor(private var placemarks: List<PlacemarkModel>)
     class MainHolder(private val binding : CardPlacemarkBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(placemark: PlacemarkModel) {
+        fun bind(placemark: PlacemarkModel, listener: PlacemarkListener) {
             binding.placemarkTitle.text = placemark.title
             binding.description.text = placemark.description
+            binding.root.setOnClickListener { listener.onPlacemarkClick(placemark) }
         }
     }
 }
