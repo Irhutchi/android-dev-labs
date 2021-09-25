@@ -62,7 +62,7 @@ class PlacemarkActivity : AppCompatActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
-    };
+    }
 }
 
 
