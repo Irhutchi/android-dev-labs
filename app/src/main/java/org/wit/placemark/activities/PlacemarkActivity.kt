@@ -28,8 +28,15 @@ class PlacemarkActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbarAdd) //(toolbarAdd is ID of toolbar)
 
         app = application as MainApp
-
         i("Placemark Activity started...")
+
+        // Retrieve placemark and read back the placemark, and place its fields
+        // (title and description) into the view controls
+        if (intent.hasExtra("placemark_edit")) {
+            placemark = intent.extras?.getParcelable("placemark_edit")!!
+            binding.placemarkTitle.setText(placemark.title)
+            binding.description.setText(placemark.description)
+        }
 
         binding.btnAdd.setOnClickListener() {
             placemark.title = binding.placemarkTitle.text.toString()
