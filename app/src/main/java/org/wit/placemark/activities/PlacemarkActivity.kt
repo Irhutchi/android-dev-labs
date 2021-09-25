@@ -23,7 +23,7 @@ class PlacemarkActivity : AppCompatActivity() {
         binding = ActivityPlacemarkBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        //setting up toolbar title (Add/Cancel)
+        //setting up toolbar title to include Add/Cancel
         binding.toolbarAdd.title = title
         setSupportActionBar(binding.toolbarAdd) //(toolbarAdd is ID of toolbar)
 
@@ -35,13 +35,8 @@ class PlacemarkActivity : AppCompatActivity() {
             placemark.title = binding.placemarkTitle.text.toString()
             placemark.description = binding.description.text.toString()
             if (placemark.title.isNotEmpty()) {
-                app.placemarks.add(placemark.copy())
-                i("add Button Pressed: ${placemark}")
-                for (i in app.placemarks.indices) {
-                    i("Placemark[$i]:${this.app.placemarks[i]}")
-                }
-                //set result code and finish
-                setResult(RESULT_OK)
+                app.placemarks.create(placemark.copy())
+                setResult(RESULT_OK) //set result code and finish
                 finish()
             } else {
                 Snackbar.make(it, "Please Enter a title", Snackbar.LENGTH_LONG)
