@@ -48,6 +48,9 @@ class PlacemarkActivity : AppCompatActivity() {
             binding.placemarkTitle.setText(placemark.title)
             binding.description.setText(placemark.description)
             binding.btnAdd.setText(R.string.save_placemark)
+            Picasso.get()
+                .load(placemark.image)
+                .into(binding.placemarkImage)
         }
         binding.btnAdd.setOnClickListener() {
             placemark.title = binding.placemarkTitle.text.toString()
