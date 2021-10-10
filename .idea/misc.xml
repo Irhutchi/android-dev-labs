@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/dev/android-mobile-labs/Greetings/app/src/main/res/drawable/ic_baseline_image.xml" value="0.38796296296296295" />
         <entry key="..\:/dev/android-mobile-labs/Greetings/app/src/main/res/layout/activity_placemark.xml" value="0.264" />
         <entry key="..\:/dev/android-mobile-labs/Greetings/app/src/main/res/layout/activity_placemark_list.xml" value="0.228125" />
         <entry key="..\:/dev/android-mobile-labs/Greetings/app/src/main/res/layout/card_placement.xml" value="0.225" />
