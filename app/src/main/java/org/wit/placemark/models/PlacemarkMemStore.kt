@@ -16,6 +16,16 @@ class PlacemarkMemStore : PlacemarkStore {
         logAll()
     }
 
+    override fun update(placemark: PlacemarkModel) {
+        // search placemark array and if id matches assign to 'foundPlacemark' param
+        var foundPlacemark: PlacemarkModel? = placemarks.find { p -> p.id == placemark.id }
+        if (foundPlacemark != null) {
+            foundPlacemark.title = placemark.title
+            foundPlacemark.description = placemark.description
+            logAll()
+        }
+    }
+
     // Log all placemarks
     fun logAll() {
         placemarks.forEach{ i("${it}") }
