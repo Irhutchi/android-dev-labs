@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.wit.placemark.R
 import org.wit.placemark.adapters.PlacemarkAdapter
@@ -18,6 +20,7 @@ class PlacemarkListActivity : AppCompatActivity(), PlacemarkListener {
 
     lateinit var app: MainApp
     private lateinit var binding: ActivityPlacemarkListBinding
+    private lateinit var refreshIntentLauncher : ActivityResultLauncher<Intent>
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,6 +36,8 @@ class PlacemarkListActivity : AppCompatActivity(), PlacemarkListener {
         val layoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = layoutManager
         binding.recyclerView.adapter = PlacemarkAdapter(app.placemarks.findAll(),this)
+
+        registerRefreshCallback()
     }
     //single button on action bar (top right)
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -44,7 +49,7 @@ class PlacemarkListActivity : AppCompatActivity(), PlacemarkListener {
         when (item.itemId) {
             R.id.item_add -> {
                 val launcherIntent = Intent(this, PlacemarkActivity::class.java)
-                startActivityForResult(launcherIntent,0)
+                refreshIntentLauncher.launch(launcherIntent)
             }
         }
         return super.onOptionsItemSelected(item)
@@ -54,11 +59,13 @@ class PlacemarkListActivity : AppCompatActivity(), PlacemarkListener {
         val launcherIntent = Intent(this, PlacemarkActivity::class.java)
         // pass selected placemark to the activity
         launcherIntent.putExtra("placemark_edit", placemark)
-        startActivityForResult(launcherIntent,0)
+        refreshIntentLauncher.launch(launcherIntent)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        binding.recyclerView.adapter?.notifyDataSetChanged()
-        super.onActivityResult(requestCode, resultCode, data)
+    // Register the callback
+    private fun registerRefreshCallback() {
+        refreshIntentLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult())
+            { binding.recyclerView.adapter?.notifyDataSetChanged() }
     }
 }
