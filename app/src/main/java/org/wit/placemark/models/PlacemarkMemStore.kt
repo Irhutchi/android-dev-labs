@@ -30,6 +30,14 @@ class PlacemarkMemStore : PlacemarkStore {
         }
     }
 
+    override fun delete(placemark: PlacemarkModel) {
+        val placemarksList = findAll() as java.util.ArrayList<PlacemarkModel>
+        var foundPlacemark: PlacemarkModel? = placemarksList.find { p -> p.id == placemark.id }
+        if (foundPlacemark != null) {
+            placemarks.remove(placemark)
+        }
+    }
+
     // Log all placemarks
     fun logAll() {
         placemarks.forEach{ i("${it}") }

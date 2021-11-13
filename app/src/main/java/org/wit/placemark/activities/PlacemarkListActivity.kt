@@ -27,7 +27,6 @@ class PlacemarkListActivity : AppCompatActivity(), PlacemarkListener {
         super.onCreate(savedInstanceState)
         binding = ActivityPlacemarkListBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        //enable the action bar
         binding.toolbar.title = title
         setSupportActionBar(binding.toolbar)
 
@@ -35,7 +34,7 @@ class PlacemarkListActivity : AppCompatActivity(), PlacemarkListener {
 
         val layoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = layoutManager
-        binding.recyclerView.adapter = PlacemarkAdapter(app.placemarks.findAll(),this)
+        loadPlacemarks()
 
         registerRefreshCallback()
     }
@@ -55,6 +54,15 @@ class PlacemarkListActivity : AppCompatActivity(), PlacemarkListener {
         return super.onOptionsItemSelected(item)
     }
 
+    private fun loadPlacemarks() {
+        showPlacemarks(app.placemarks.findAll())
+    }
+
+    fun showPlacemarks (placemarks: List<PlacemarkModel>) {
+        binding.recyclerView.adapter = PlacemarkAdapter(placemarks, this)
+        binding.recyclerView.adapter?.notifyDataSetChanged()
+    }
+
     override fun onPlacemarkClick(placemark: PlacemarkModel) {
         val launcherIntent = Intent(this, PlacemarkActivity::class.java)
         // pass selected placemark to the activity
@@ -66,6 +74,6 @@ class PlacemarkListActivity : AppCompatActivity(), PlacemarkListener {
     private fun registerRefreshCallback() {
         refreshIntentLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult())
-            { binding.recyclerView.adapter?.notifyDataSetChanged() }
+            { loadPlacemarks() }
     }
 }
