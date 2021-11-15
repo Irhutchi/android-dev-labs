@@ -50,6 +50,10 @@ class PlacemarkListActivity : AppCompatActivity(), PlacemarkListener {
                 val launcherIntent = Intent(this, PlacemarkActivity::class.java)
                 refreshIntentLauncher.launch(launcherIntent)
             }
+            R.id.item_map -> {
+                val launcherIntent = Intent(this, PlacemarkMapsActivity::class.java)
+                refreshIntentLauncher.launch(launcherIntent)
+            }
         }
         return super.onOptionsItemSelected(item)
     }
