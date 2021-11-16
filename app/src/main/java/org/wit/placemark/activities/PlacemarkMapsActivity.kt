@@ -15,7 +15,7 @@ import org.wit.placemark.databinding.ContentPlacemarkMapsBinding
 import org.wit.placemark.main.MainApp
 
 
-class PlacemarkMapsActivity : AppCompatActivity() {
+class PlacemarkMapsActivity : AppCompatActivity(), GoogleMap.OnMarkerClickListener {
 
     private lateinit var binding: ActivityPlacemarkMapsBinding
     private lateinit var contentBinding: ContentPlacemarkMapsBinding
@@ -40,6 +40,7 @@ class PlacemarkMapsActivity : AppCompatActivity() {
 
     fun configureMap() {
         map.uiSettings.isZoomControlsEnabled = true
+        map.setOnMarkerClickListener(this)
         app.placemarks.findAll().forEach{
             val loc = LatLng(it.lat, it.lng)
             val options = MarkerOptions().title(it.title).position(loc)
@@ -48,6 +49,13 @@ class PlacemarkMapsActivity : AppCompatActivity() {
         }
     }
 
+    override fun onMarkerClick(marker: Marker): Boolean {
+        //find the textView by ID and set the value based on marker
+        val currentTitle: TextView = findViewById<TextView>(R.id.currentTitle)
+        currentTitle.text = marker.title
+
+        return false
+    }
 
     override fun onDestroy() {
         super.onDestroy()
