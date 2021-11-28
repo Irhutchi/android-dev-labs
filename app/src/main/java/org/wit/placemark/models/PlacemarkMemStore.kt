@@ -11,6 +11,11 @@ class PlacemarkMemStore : PlacemarkStore {
         return placemarks
     }
 
+    override fun findById(id:Long) : PlacemarkModel? {
+        val foundPlacemark: PlacemarkModel? = placemarks.find { it.id == id }
+        return  foundPlacemark
+    }
+
     override fun create(placemark: PlacemarkModel) {
         placemarks.add(placemark)
         logAll()
@@ -31,11 +36,7 @@ class PlacemarkMemStore : PlacemarkStore {
     }
 
     override fun delete(placemark: PlacemarkModel) {
-        val placemarksList = findAll() as java.util.ArrayList<PlacemarkModel>
-        var foundPlacemark: PlacemarkModel? = placemarksList.find { p -> p.id == placemark.id }
-        if (foundPlacemark != null) {
-            placemarks.remove(placemark)
-        }
+        placemarks.remove(placemark)
     }
 
     // Log all placemarks

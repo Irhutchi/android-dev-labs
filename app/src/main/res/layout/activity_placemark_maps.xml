@@ -5,10 +5,10 @@
     android:id="@+id/coordinatorLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.PlacemarkMapsActivity">
+    tools:context=".views.editlocation.EditLocationView">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appBarLayout"
+        android:id="@+id/appBarLayout2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@color/colorAccent"
@@ -21,7 +21,7 @@
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbarAdd"
+            android:id="@+id/toolbarMaps"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:titleTextColor="@color/colorPrimary" />
@@ -35,6 +35,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout2" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

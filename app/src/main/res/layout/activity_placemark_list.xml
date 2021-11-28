@@ -8,6 +8,7 @@
     tools:context="org.wit.placemark.activities.PlacemarkListActivity">
 
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorAccent"
@@ -16,7 +17,7 @@
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbarAdd"
+            android:id="@+id/toolbarList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:titleTextColor="@color/colorPrimary" />

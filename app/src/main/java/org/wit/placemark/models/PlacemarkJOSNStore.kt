@@ -35,6 +35,11 @@ class PlacemarkJSONStore(private val context: Context) : PlacemarkStore {
         return placemarks
     }
 
+    override fun findById(id:Long) : PlacemarkModel? {
+        val foundPlacemark: PlacemarkModel? = placemarks.find { it.id == id }
+        return foundPlacemark
+    }
+
     override fun create(placemark: PlacemarkModel) {
         placemark.id = generateRandomId()
         placemarks.add(placemark)
@@ -57,11 +62,9 @@ class PlacemarkJSONStore(private val context: Context) : PlacemarkStore {
     }
 
     override fun delete(placemark: PlacemarkModel) {
-        val placemarksList = findAll() as ArrayList<PlacemarkModel>
-        var foundPlacemark: PlacemarkModel? = placemarksList.find { p -> p.id == placemark.id }
-        if (foundPlacemark != null) {
-            placemarks.remove(placemark)
-        }
+        val foundPlacemark: PlacemarkModel? = placemarks.find { it.id == placemark.id }
+        placemarks.remove(foundPlacemark)
+        serialize()
     }
 
     private fun serialize() {

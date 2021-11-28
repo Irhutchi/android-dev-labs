@@ -6,6 +6,8 @@
     <string name="menu_addPlacemark">Add</string>
     <string name="save_placemark"> Save Placemark </string>
     <string name="menu_cancelPlacemark">Cancel</string>
+    <string name="menu_deletePlacemark">Delete</string>
+    <string name="menu_savePlacemark">Save</string>
     <string name="enter_placemark_title"> Please enter a Placemark Title </string>
     <string name="button_addImage"> Add Image </string>
     <string name="change_placemark_image">Change placemark image</string>
