@@ -14,8 +14,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Placemark">
         <activity
-            android:name=".activities.PlacemarkMapsActivity"
-            android:exported="false"
+            android:name=".views.map.PlacemarkMapView"
+            android:exported="true"
             android:label="@string/title_activity_placemark_maps"
             android:theme="@style/Theme.Placemark.NoActionBar" />
 
@@ -37,10 +37,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".views.placemark.PlacemarkView" />
-        <activity
-            android:name=".views.map.PlacemarkMapView"
-            android:label="@string/title_activity_placemark_maps"
-            android:theme="@style/Theme.Placemark.NoActionBar" />
 
 
     </application>

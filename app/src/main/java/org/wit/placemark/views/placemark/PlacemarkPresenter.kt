@@ -1,14 +1,18 @@
 package org.wit.placemark.views.placemark
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import org.wit.placemark.databinding.ActivityPlacemarkBinding
+import org.wit.placemark.helpers.checkLocationPermissions
 import org.wit.placemark.helpers.showImagePicker
 import org.wit.placemark.main.MainApp
 import org.wit.placemark.models.Location
@@ -21,25 +25,36 @@ class PlacemarkPresenter(val view: PlacemarkView) {
     var placemark = PlacemarkModel()
     var map: GoogleMap? = null
     var app: MainApp = view.application as MainApp
-//    var binding: ActivityPlacemarkBinding = ActivityPlacemarkBinding.inflate(view.layoutInflater)
+    var binding: ActivityPlacemarkBinding = ActivityPlacemarkBinding.inflate(view.layoutInflater)
     private lateinit var imageIntentLauncher : ActivityResultLauncher<Intent>
     private lateinit var mapIntentLauncher : ActivityResultLauncher<Intent>
     private val location = Location(52.245696, -7.139102, 15f)
+    var locationService: FusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(view)
+    private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
     var edit = false;
 
+
     init {
+
+        doPermissionLauncher()
+        registerImagePickerCallback()
+        registerMapCallback()
+
         if (view.intent.hasExtra("placemark_edit")) {
             edit = true
             placemark = view.intent.extras?.getParcelable("placemark_edit")!!
             view.showPlacemark(placemark)
-        } else {
+        }
+        else {
+
+            if (checkLocationPermissions(view)) {
+                doPermissionLauncher()
+            }
             placemark.lat = location.lat
             placemark.lng = location.lng
         }
-        registerImagePickerCallback()
-        registerMapCallback()
-    }
 
+    }
     fun doConfigureMap(m: GoogleMap) {
         map = m
         locationUpdate(placemark.lat, placemark.lng)
@@ -87,7 +102,6 @@ class PlacemarkPresenter(val view: PlacemarkView) {
     }
 
     fun doSetLocation() {
-        val location = Location(52.245696, -7.139102, 15f)
         if (placemark.zoom != 0f) {
             location.lat =  placemark.lat
             location.lng = placemark.lng
@@ -102,6 +116,28 @@ class PlacemarkPresenter(val view: PlacemarkView) {
         placemark.title = title;
         placemark.description = description
     }
+
+    private fun doPermissionLauncher() {
+        Timber.i("permission check called")
+        requestPermissionLauncher =
+            view.registerForActivityResult(ActivityResultContracts.RequestPermission())
+            { isGranted: Boolean ->
+                if (isGranted) {
+                    doSetCurrentLocation()
+                } else {
+                    locationUpdate(location.lat, location.lng)
+                }
+            }
+    }
+
+    @SuppressLint("MissingPermission")
+    fun doSetCurrentLocation() {
+        Timber.i("setting location from doSetLocation")
+        locationService.lastLocation.addOnSuccessListener {
+            locationUpdate(it.latitude, it.longitude)
+        }
+    }
+
 
 
     private fun registerImagePickerCallback() {
