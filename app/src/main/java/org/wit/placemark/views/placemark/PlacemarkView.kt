@@ -36,15 +36,16 @@ class PlacemarkView : AppCompatActivity() {
             presenter.doSelectImage()
         }
 
-        binding.placemarkLocation.setOnClickListener {
-            presenter.cachePlacemark(binding.placemarkTitle.text.toString(), binding.description.text.toString())
-            presenter.doSetLocation()
-        }
+//        binding.placemarkLocation.setOnClickListener {
+//            presenter.cachePlacemark(binding.placemarkTitle.text.toString(), binding.description.text.toString())
+//            presenter.doSetLocation()
+//        }
 
         binding.GoogleMapView.onCreate(savedInstanceState)
         binding.GoogleMapView.getMapAsync {
             map = it
             presenter.doConfigureMap(map)
+            it.setOnMapClickListener { presenter.doSetLocation() }
         }
 
     }
@@ -91,6 +92,8 @@ class PlacemarkView : AppCompatActivity() {
         if (placemark.image != Uri.EMPTY) {
             binding.chooseImage.setText(R.string.change_placemark_image)
         }
+        binding.lat.setText("%.6f".format(placemark.lat))
+        binding.lng.setText("%.6f".format(placemark.lng))
 
     }
 
@@ -120,6 +123,7 @@ class PlacemarkView : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         binding.GoogleMapView.onResume()
+        presenter.doRestartLocationUpdates()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

@@ -5,14 +5,14 @@ import android.content.Intent
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import org.wit.placemark.databinding.ActivityPlacemarkBinding
 import org.wit.placemark.helpers.checkLocationPermissions
+import org.wit.placemark.helpers.createDefaultLocationRequest
 import org.wit.placemark.helpers.showImagePicker
 import org.wit.placemark.main.MainApp
 import org.wit.placemark.models.Location
@@ -31,6 +31,7 @@ class PlacemarkPresenter(val view: PlacemarkView) {
     private val location = Location(52.245696, -7.139102, 15f)
     var locationService: FusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(view)
     private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
+    val locationRequest = createDefaultLocationRequest()
     var edit = false;
 
 
@@ -137,8 +138,23 @@ class PlacemarkPresenter(val view: PlacemarkView) {
             locationUpdate(it.latitude, it.longitude)
         }
     }
-
-
+    /* Callback func is triggered by fused location service when location
+       updates is turned on. If edit=false, assume live location updates commences
+    */
+    @SuppressLint("MissingPermission")
+    fun doRestartLocationUpdates() {
+        var locationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult?) {
+                if (locationResult != null && locationResult.locations != null) {
+                    val l = locationResult.locations.last()
+                    locationUpdate(l.latitude, l.longitude)
+                }
+            }
+        }
+        if (!edit) {
+            locationService.requestLocationUpdates(locationRequest, locationCallback, null)
+        }
+    }
 
     private fun registerImagePickerCallback() {
 
